@@ -1,0 +1,427 @@
+$l_r: 'lato_r', sans-serif;
+$l_b: 'lato_b', sans-serif;
+$m_r: 'montserrat_r', sans-serif;
+$m_b: 'montserrat_b', sans-serif;
+@mixin font($size, $color, $family, $lineHeght:1) {
+  font-size: $size;
+  color: $color;
+  font-family: $family;
+  line-height: $lineHeght;
+}
+@mixin text-overflow {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+@mixin flex-ac {
+  display: flex;
+  align-items: center;
+}
+@mixin flex-c {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+$min-content-width: 875px;
+
+input[type='file'] {
+  display: none;
+}
+.main {
+  @include flex-c;
+  min-width: $min-content-width;
+  margin-top: 35px;
+  height: calc(99vh - 35px);
+  min-height: calc(580px - 35px);
+  padding: 0 150px;
+  width: calc(100% - 300px);
+}
+
+.main-form {
+  display: flex;
+  @include flex-c;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 490px;
+}
+
+.gen-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  min-width: $min-content-width;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.gen-change-type {
+  display: flex;
+  width: 100%;
+  height: 65px;
+  justify-content: space-between;
+  min-width: $min-content-width;
+  & input[type='radio'],
+  label,
+  i {
+    cursor: pointer;
+  }
+  & label {
+    @include font(15px, #c8c8c8, $l_r, 1.2);
+  }
+  & :checked + label {
+    color: #4b4b4b;
+  }
+  & div {
+    @include flex-ac;
+  }
+  & i {
+    margin: 0 10px;
+  }
+}
+.gen-change-type__main {
+  & div {
+    margin-right: 45px;
+  }
+}
+.gen-btn {
+  @include flex-c;
+  margin-top: 35px;
+}
+
+/** 
+* material 預設高度 : 256px , 
+* outer-tofix-perfect-scrollbar height 必須小於 [material default height]. 
+* @example data: 255px(boxsizing) || 254px (without boxsizing) 
+*/
+.outer-tofix-perfect-scrollbar {
+  background-color: #fff;
+  height: 254px;
+}
+.outer-minfix-perfect-scrollbar {
+  background-color: #fff;
+  // min-height: 254px;
+}
+
+/* drop */
+.gen-drop {
+  display: flex;
+  width: 100%;
+  height: calc(100% - 250px);
+  /* header 73 +  type 18+15 +btn 50 + bottom  40*/
+}
+.dropzone {
+  @include flex-c;
+  min-height: 300px;
+  width: 100%;
+  height: 100%;
+  min-width: $min-content-width;
+  border: 1px solid #c8c8c8;
+  border-radius: 6px;
+}
+.centered {
+  @include font(24px, #787878, $l_b, 1.2);
+  font-weight: bold;
+  text-align: center;
+  margin: 25px 0 15px 0;
+}
+.centered-sub {
+  @include font(13px, #969696, $l_r, 1.2);
+  text-align: center;
+}
+.centered-icon {
+  margin: 0 auto;
+  width: 70px;
+  height: 70px;
+  background-color: #787878;
+}
+.mat-custom-btn {
+  width: 120px;
+  height: 30px;
+  color: #fff;
+  background-color: #16a7ba;
+  border-radius: 15px;
+  text-align: center;
+  @include font(13px, #fff, $m_r, 1.5);
+  &:hover {
+    background-color: #28c2d6;
+  }
+  &:active {
+    background-color: #088d9e;
+  }
+}
+/* header */
+.header {
+  display: flex;
+  position: relative;
+}
+.header__left {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  width: 80px;
+  margin-top: 25px;
+  margin-left: 40px;
+  z-index: 5;
+}
+.icon-cancel {
+  display: flex;
+  position: relative;
+  align-items: center;
+  flex-direction: column;
+  width: 50px;
+  height: 60px;
+  padding-right: 20px;
+  border-right: 1px solid gray;
+  user-select: none;
+  cursor: pointer;
+}
+.icon-cancel:hover > .font-14-gray {
+  color: rgb(255, 119, 85);
+}
+.icon-cancel:hover > .icn-btn-2626_cancel {
+  background-position: calc(-26px * 0) -26px;
+}
+.icn-btn-2626_cancel {
+  margin: 10px 0;
+}
+.font-14-gray {
+  font-size: 14px;
+  font-family: 'Lato', sans-serif;
+  color: #828282;
+}
+.icn-btn-2626 {
+  width: 26px;
+  height: 26px;
+  background-color: #498046;
+}
+.override-mat-header-width {
+  width: calc(100% - 20px);
+  &:not(:last-child) {
+    margin-right: 20px;
+  }
+}
+/* temp */
+.temp-upload-icon {
+  display: block;
+  width: 100px;
+  white-space: nowrap;
+  color: #000;
+  min-height: 5px;
+  background-color: #ff7755;
+}
+
+.question {
+  @include flex-c;
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  background-color: #ff7755;
+  bottom: 40px;
+  right: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  &::after {
+    @include flex-c;
+    width: 24px;
+    height: 24px;
+    font-weight: bold;
+    content: '?';
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 50%;
+  }
+}
+.display-sheet-js {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.sheet-outer {
+  display: flex;
+  border: 1px solid;
+  @include font(15px, #4b4b4b, $l_r, 1.2);
+  white-space: nowrap;
+}
+.sheet-display {
+  display: flex;
+  border: 1px solid red;
+}
+
+/* cdk table */
+.example-container {
+  // height: 400px;
+  // width: 550px;
+  // overflow: auto;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.example-container::after {
+  content: 'Loading...';
+  @include font(15px, #4b4b4b, $l_r, 1.2);
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  height: 25px;
+  width: 50%;
+}
+// .example-container::after {
+//   content: '';
+//   position: absolute;
+//   background-color: #fff;
+//   bottom: 0;
+//   left: 0;
+//   height: 25px;
+//   width: calc(100% - 1px);
+//   border-top: 1px solid #dcdcdc;
+//   border-bottom: 1px solid #dcdcdc;
+//   z-index: 10;
+// }
+// .example-container::before {
+//   content: '';
+//   position: absolute;
+//   background-color: #fff;
+//   top: 0;
+//   right: 0;
+//   height: 100%;
+//   width: 25px;
+//   border-right: 1px solid #dcdcdc;
+//   border-left: 1px solid #dcdcdc;
+//   z-index: 10;
+// }
+
+table {
+  width: 800px;
+  @include font(15px, #4b4b4b, $l_r, 2);
+  text-align: center;
+  & * {
+    box-sizing: border-box;
+  }
+}
+
+tr {
+  background-color: #28c2d6;
+}
+
+th.cdk-header-cell {
+  white-space: nowrap;
+  padding: 0 30px;
+  background-color: #e7f6f8;
+  &:first-child {
+    padding: 0 15px;
+    &:before {
+      /* 刻意用 before 蓋掉 原本顯示的文字, IE10 需要 css hack */
+      background-color: #e7f6f8;
+    }
+  }
+}
+
+@media all and (-ms-high-contrast: none) {
+  /* IE11 */
+  *::-ms-backdrop,
+  .cdk-table-sticky:before {
+    content: none !important;
+  }
+  *::-ms-backdrop,
+  td.cdk-cell:first-child {
+    border: 1px solid #dcdcdc;
+  }
+  *::-ms-backdrop,
+  th.cdk-header-cell {
+    border: 1px solid #dcdcdc;
+  }
+}
+td.cdk-cell:first-child {
+  box-sizing: border-box;
+  background-color: #e7f6f8;
+}
+
+td.cdk-cell:not(:first-child) {
+  background-color: #fff;
+  padding: 0 15px;
+  border: 1px solid #dcdcdc;
+}
+.cdk-table-sticky {
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #dcdcdc;
+    box-sizing: border-box;
+  }
+}
+
+/* radio btn */
+
+.mat-radio-button {
+  @include font(15px, #c8c8c8, $l_r, 1.2);
+}
+.mat-radio-checked {
+  color: #4b4b4b;
+}
+
+/* pdf */
+
+.display-pdf {
+  height: 100%;
+  width: 100%;
+  border: 2px solid;
+  overflow: auto;
+}
+
+.ng2-pdf-viewer-container {
+  overflow-x: initial !important;
+}
+::ng-deep .ng2-pdf-viewer-container {
+  overflow-x: initial !important;
+}
+
+/* 右側 tab */
+.gen-excel-tab {
+  display: flex;
+}
+::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 13.5px !important;
+}
+.gen-excel-tab .mat-select {
+  font-weight: bold;
+  font-family: $m_b;
+}
+
+.excel-tab-prev,
+.excel-tab-next {
+  width: 0;
+  height: 0;
+  margin: 8px 10px;
+  border-style: solid;
+  cursor: pointer;
+}
+.excel-tab-prev {
+  border-width: 5px 10px 5px 0;
+  border-color: transparent #c8c8c8 transparent transparent;
+  &:hover {
+    border-color: transparent #28c2d6 transparent transparent;
+  }
+  &:active {
+    border-color: transparent #088d9e transparent transparent;
+  }
+}
+.excel-tab-page {
+  @include font(15px, #c8c8c8, $l_r, 1.2);
+  margin: 8px 10px;
+}
+.excel-tab-next {
+  border-width: 5px 0 5px 10px;
+  border-color: transparent transparent transparent #c8c8c8;
+  &:hover {
+    border-color: transparent transparent transparent #28c2d6;
+  }
+  &:active {
+    border-color: transparent transparent transparent #088d9e;
+  }
+}

@@ -1,0 +1,97 @@
+<div class="main">
+	<form class="main-form" [formGroup]="firstFormGroup">
+		<div class="gen-header">
+			<mat-form-field appearance="outline" class="override-mat-header-width">
+				<mat-label class="form-font">Name</mat-label>
+				<input matInput placeholder="Placeholder" [formControl]="email" required>
+        <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="override-mat-header-width">
+        <mat-label class="form-font">Other</mat-label>
+        <input matInput placeholder="Placeholder">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="override-mat-header-width">
+        <mat-label>Tool</mat-label>
+        <mat-select placeholder="Toppings" [formControl]="toppings" multiple disableOptionCentering disableRipple>
+              <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="override-mat-header-width">
+        <mat-label>Part Reference</mat-label>
+        <mat-select #tSelectsHeight (click)="consoleHeight(tSelectsHeight)" placeholder="Select an option"
+          disableOptionCentering disableRipple>
+              <mat-option value="None">None</mat-option>
+              <mat-option *ngFor="let state of states" [value]="state"> {{state}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <mat-radio-group class="gen-change-type">
+      <div class="gen-change-type__main">
+        <div class="gen-change-type__excel">
+          <mat-radio-button #tMatRadioExcel value="2" (click)="onClickRadioExcel()" checked>Excel</mat-radio-button>
+          <label (click)="tMatRadioExcel.checked = true">
+            <i class="temp-upload-icon" for="excel-upload">click to upload</i>
+            <input type="file" id='excel-upload' accept=".xlsx" multiple="false"
+              (change)="inputExcelOnClick($event)" />
+          </label>
+        </div>
+        <div class="gen-change-type__pdf">
+          <mat-radio-button #tMatRadioPDF value="1" (click)="onClickRadioPDF()">PDF</mat-radio-button>
+          <label (click)="tMatRadioPDF.checked = true">
+            <i class="temp-upload-icon" for="pdf-upload">click to upload</i>
+            <input type="file" (change)="pdfOnload($event)" id='pdf-upload' accept=".pdf" multiple="false" />
+          </label>
+        </div>
+      </div>
+      <div class="gen-excel-tab" *ngIf="!isEmptyDrop && isExcelDrop">
+        <div class="excel-tab-prev"></div>
+        <mat-form-field floatLabel="never" appearance="none">
+          <mat-select [(value)]="selectDefault" class="garage-select-color" #tSelectTabHeight
+            (click)="consoleHeight(tSelectTabHeight)" placeholder="Select an Tab" disableOptionCentering disableRipple>
+            <div [ngClass]="{'outer-tofix-perfect-scrollbar': isMaxSelect }">
+                <mat-option *ngFor="let name of sheetNameForTab; let i = index" [value]="name"
+                  (click)="loadSheetOnTabClick(i)"> {{name}} </mat-option>
+            </div>
+          </mat-select>
+        </mat-form-field>
+        <p class="excel-tab-page"> {{currentPage + 1}} / {{ totalPage }} </p>
+        <div class="excel-tab-next"></div>
+      </div>
+    </mat-radio-group>
+    <div class="gen-drop">
+      <div class="dropzone" *ngIf="isEmptyDrop" appDragDrop (filesChangeEmiter)="dropExcelOnChance($event)"
+        (filesInvalidEmiter)="dropExcelBlock($event)"
+        [allowed_extensions]="['xlsx','xls',  'xlsm','xltx','xltm','xlsb','xlam']">
+        <div class="text-wrapper">
+          <div class="centered">DRAG & DROP</div>
+          <div class="centered-sub">Excel format is suggested.</div>
+        </div>
+      </div>
+      <div class="display-sheet-js" [hidden]="!(!isEmptyDrop && isExcelDrop)">
+        <div class="example-container">
+            <table cdk-table [dataSource]="excelDataEncodeToJson">
+              <tr cdk-header-row *cdkHeaderRowDef="excelTransformNum; sticky: true"></tr>
+              <tr cdk-row *cdkRowDef="let row ; columns: excelTransformNum;"></tr>
+              <ng-container cdkColumnDef="order" sticky>
+                <th cdk-header-cell *cdkHeaderCellDef> {{sheetMaxRow}} </th>
+                <td cdk-cell *cdkCellDef="let element; let idx = index"> {{idx}} </td>
+              </ng-container>
+              <ng-container *ngFor="let disCol of excelTransformNum | slice:1 ;let colIndex = index ;"
+                cdkColumnDef="{{disCol}}">
+                <th cdk-header-cell *cdkHeaderCellDef> {{disCol}} </th>
+                <td cdk-cell *cdkCellDef="let element"> {{ element[disCol]}} </td>
+              </ng-container>
+            </table>
+        </div>
+      </div>
+      <div class="display-pdf" [hidden]="!(!isEmptyDrop && !isExcelDrop)">
+          <pdf-viewer [src]="pdfSrc" [render-text]="true" [original-size]="true">
+          </pdf-viewer>
+      </div>
+    </div>
+    <div class="gen-btn">
+      <!-- <button class="mat-custom-btn" mat-raised-button>Confirm</button> -->
+      <button class="mat-custom-btn">Confirm</button>
+    </div>
+  </form>
+</div>

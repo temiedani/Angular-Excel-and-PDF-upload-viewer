@@ -1,0 +1,389 @@
+@import '~@angular/material/theming';
+
+// mat-option{
+//   height: 2.5em !important;
+// }
+
+// 自定義 字體
+$l_r: 'lato_r', sans-serif;
+$l_b: 'lato_b', sans-serif;
+$m_r: 'montserrat_r', sans-serif;
+$m_b: 'montserrat_b', sans-serif;
+
+$cc-lr: mat-typography-config(
+  $font-family: $l_r,
+  $title: mat-typography-level(20px, 32px, 500),
+  $subheading-2: mat-typography-level(15px, 28px, 400),
+  $subheading-1: mat-typography-level(15px, 24px, 400),
+  $body-2: mat-typography-level(15px, 24px, 500),
+  $body-1: mat-typography-level(15px, 20px, 400),
+  $caption: mat-typography-level(12px, 20px, 400),
+  $button: mat-typography-level(13px, 14px, 500),
+  // Line-height must be unit-less fraction of the font-size. $input: mat-typography-level(inherit, 1.125, 400),
+);
+
+// 自定義顏色 $default: 500, $lighter: 100, $darker: 700
+$custom-cc-gray: (
+  100: #d6f3f6,
+  500: #c8c8c8,
+  700: #b9eaf1,
+  /* 字體顏色 */ contrast:
+    (
+      100: #000,
+      500: #000,
+      700: #000,
+    ),
+);
+// 自定義顏色
+$custom-cc-primary: (
+  100: #d6f3f6,
+  500: #16a7ba,
+  700: #b9eaf1,
+  /* 字體顏色 */ contrast:
+    (
+      100: #fff,
+      500: #fff,
+      700: #fff,
+    ),
+);
+// 自定義顏色
+$custom-cc-warn: (
+  100: #ff0032,
+  500: #ff0032,
+  700: #ff0032,
+  /* 字體顏色 */ contrast:
+    (
+      100: #000,
+      500: #000,
+      700: #000,
+    ),
+);
+$cc-hover: rgba(#d6f3f6, 1);
+$cc-font: mat-palette($custom-cc-gray);
+$cc-primary: mat-palette($custom-cc-primary);
+$cc-warn: mat-palette($custom-cc-warn);
+// $cc-primary: map-get($custom-cc-primary, 700);
+// Foreground palette for light themes.
+$mat-light-theme-foreground: (
+  base: black,
+  divider: $dark-dividers,
+  dividers: $dark-dividers,
+  disabled: $dark-disabled-text,
+  disabled-button: rgba(black, 0.26),
+  disabled-text: $dark-disabled-text,
+  elevation: black,
+  hint-text: $dark-disabled-text,
+  secondary-text: $dark-secondary-text,
+  icon: rgba(black, 0.54),
+  icons: rgba(black, 0.54),
+  text: #4b4b4b,
+  slider-min: rgba(black, 0.87),
+  slider-off: rgba(black, 0.26),
+  slider-off-active: rgba(black, 0.38),
+);
+
+// Background palette for light themes.
+$mat-light-theme-background: (
+  status-bar: map_get($mat-grey, 300),
+  app-bar: map_get($mat-grey, 100),
+  background: map_get($mat-grey, 50),
+  hover: rgba(black, 0.04),
+  // TODO(kara): check style with Material Design UX card: white,
+  dialog: white,
+  disabled-button: rgba(black, 0.12),
+  raised-button: white,
+  focused-button: $dark-focused,
+  selected-button: map_get($mat-grey, 300),
+  selected-disabled-button: map_get($mat-grey, 400),
+  disabled-button-toggle: map_get($mat-grey, 200),
+  unselected-chip: map_get($mat-grey, 300),
+  disabled-list-option: map_get($mat-grey, 200),
+);
+
+@mixin mat-option-typography($cc-lr) {
+  .mat-option {
+    font: {
+      family: mat-font-family($cc-lr);
+      size: mat-font-size($cc-lr, subheading-2);
+    }
+  }
+}
+
+/* 修改 form-field-outline 的 padding */
+@mixin mat-form-field-outline-typography($config) {
+  // The unit-less line-height from the font config.
+  $line-height: mat-line-height($config, input);
+  // The amount to scale the font for the floating label and subscript.
+  $subscript-font-scale: 0.75;
+  // The padding above and below the infix.
+  $infix-padding: 0.5em;
+  // The margin applied to the form-field-infix to reserve space for the floating label.
+  $infix-margin-top: 1em * $line-height * $subscript-font-scale;
+  // The space between the bottom of the .mat-form-field-flex area and the subscript wrapper.
+  // Mocks show half of the text size, but this margin is applied to an element with the subscript
+  // text font size, so we need to divide by the scale factor to make it half of the original text
+  // size.
+  $subscript-margin-top: 0.5em / $subscript-font-scale;
+  // The padding applied to the form-field-wrapper to reserve space for the subscript, since it's
+  // absolutely positioned. This is a combination of the subscript's margin and line-height, but we
+  // need to multiply by the subscript font scale factor since the wrapper has a larger font size.
+  $wrapper-padding-bottom: ($subscript-margin-top + $line-height) * $subscript-font-scale;
+  // The amount we offset the label from the input text in the outline appearance.
+  $outline-appearance-label-offset: -0.25em;
+
+  .mat-form-field-appearance-outline {
+    .mat-form-field-infix {
+      padding: $infix-padding 0 $infix-padding 0;
+    }
+
+    .mat-form-field-label {
+      top: $infix-margin-top + $infix-padding;
+      margin-top: $outline-appearance-label-offset;
+    }
+
+    &.mat-form-field-can-float {
+      &.mat-form-field-should-float .mat-form-field-label,
+      .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label {
+        @include _mat-form-field-outline-label-floating(
+          $subscript-font-scale,
+          $infix-padding + $outline-appearance-label-offset,
+          $infix-margin-top
+        );
+      }
+
+      // Server-side rendered matInput with a label attribute but label not shown
+      // (used as a pure CSS stand-in for mat-form-field-should-float).
+      .mat-input-server[label]:not(:label-shown) + .mat-form-field-label-wrapper .mat-form-field-label {
+        @include _mat-form-field-outline-label-floating(
+          $subscript-font-scale,
+          $infix-padding + $outline-appearance-label-offset,
+          $infix-margin-top
+        );
+      }
+    }
+  }
+}
+/* 修改 form-select 的 選中顏色 */
+@mixin mat-option-theme($theme) {
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  .mat-option {
+    color: mat-color($foreground, text);
+    &:hover:not(.mat-option-disabled),
+    &:focus:not(.mat-option-disabled) {
+      // background: mat-color($background, hover);
+      background: map-get($custom-cc-primary, 100);
+    }
+    // In multiple mode there is a checkbox to show that the option is selected.
+    &.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled) {
+      background: mat-color($background, hover);
+    }
+    &.mat-active {
+      background: map-get($custom-cc-primary, 700);
+      color: mat-color($foreground, text);
+    }
+    &.mat-option-disabled {
+      color: mat-color($foreground, hint-text);
+    }
+    background-color: #fff;
+  }
+  .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: mat-color($foreground, text);
+  }
+  .mat-accent .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: mat-color($accent);
+  }
+  .mat-warn .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: mat-color($warn);
+  }
+}
+/* 修改 select 的 hover.active */
+@mixin mat-select-theme($theme) {
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  .mat-select-value {
+    color: mat-color($foreground, text);
+  }
+  .mat-select-placeholder {
+    color: _mat-control-placeholder-color($theme);
+  }
+  .mat-select-disabled .mat-select-value {
+    color: mat-color($foreground, disabled-text);
+  }
+  .cc-select-color .mat-select-value {
+    color: map-get($custom-cc-primary, 500);
+  }
+  .mat-select-arrow {
+    color: mat-color($foreground, secondary-text);
+  }
+  .mat-select-panel {
+    background: mat-color($background, card);
+    @include _mat-theme-overridable-elevation(4, $theme);
+    .mat-option.mat-selected:not(.mat-option-multiple) {
+      background: map-get($custom-cc-primary, 700);
+    }
+  }
+
+  .mat-form-field {
+    &.mat-focused {
+      &.mat-primary .mat-select-arrow {
+        color: mat-color($primary);
+      }
+      &.mat-accent .mat-select-arrow {
+        color: mat-color($accent);
+      }
+      &.mat-warn .mat-select-arrow {
+        color: mat-color($warn);
+      }
+    }
+    .mat-select.mat-select-invalid .mat-select-arrow {
+      color: mat-color($warn);
+    }
+    .mat-select.mat-select-disabled .mat-select-arrow {
+      color: mat-color($foreground, disabled-text);
+    }
+  }
+}
+
+// 修改 outline 的顏色
+@mixin mat-form-field-outline-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $foreground: map-get($theme, foreground);
+  $is-dark-theme: map-get($theme, is-dark);
+
+  $label-disabled-color: mat-color($foreground, disabled-text);
+  $outline-color: mat-color($foreground, divider, if($is-dark-theme, 0.3, 0.12));
+  $outline-color-hover: mat-color($foreground, divider, if($is-dark-theme, 1, 0.87));
+  $outline-color-primary: mat-color($primary);
+  $outline-color-accent: mat-color($accent);
+  $outline-color-warn: mat-color($warn);
+  $outline-color-disabled: mat-color($foreground, divider, if($is-dark-theme, 0.15, 0.06));
+  .mat-form-field-appearance-outline {
+    .mat-form-field-outline {
+      color: $outline-color;
+    }
+    .mat-form-field-outline-thick {
+      color: map-get($custom-cc-primary, 700);
+    }
+    &.mat-focused {
+      .mat-form-field-outline-thick {
+        color: $outline-color-primary;
+      }
+      &.mat-accent .mat-form-field-outline-thick {
+        color: $outline-color-accent;
+      }
+      &.mat-warn .mat-form-field-outline-thick {
+        color: $outline-color-warn;
+      }
+    }
+    // Class repeated so that rule is specific enough to override focused accent color case.
+    &.mat-form-field-invalid.mat-form-field-invalid {
+      .mat-form-field-outline-thick {
+        color: $outline-color-warn;
+      }
+    }
+    &.mat-form-field-disabled {
+      .mat-form-field-label {
+        color: $label-disabled-color;
+      }
+      .mat-form-field-outline {
+        color: $outline-color-disabled;
+      }
+    }
+  }
+}
+
+// Creates a container object for a light theme to be given to individual component theme mixins.
+@function mat-light-theme($primary, $accent, $warn: mat-palette($mat-red)) {
+  @return (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+    is-dark: false,
+    foreground: $mat-light-theme-foreground,
+    background: $mat-light-theme-background
+  );
+}
+@mixin _mat-radio-color($palette) {
+  &.mat-radio-checked .mat-radio-outer-circle {
+    border-color: mat-color($palette);
+  }
+
+  .mat-radio-inner-circle,
+  .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple),
+  &.mat-radio-checked .mat-radio-persistent-ripple,
+  &:active .mat-radio-persistent-ripple {
+    background-color: mat-color($palette);
+  }
+}
+@mixin mat-radio-theme($theme) {
+  $primary: map-get($theme, primary);
+
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+
+  .mat-radio-outer-circle {
+    border-color: mat-color($foreground, secondary-text);
+  }
+
+  .mat-radio-button {
+    &.mat-primary {
+      @include _mat-radio-color($cc-primary);
+    }
+
+    &.mat-accent {
+      @include _mat-radio-color($cc-primary);
+    }
+
+    &.mat-warn {
+      @include _mat-radio-color($warn);
+    }
+
+    // This needs extra specificity, because the classes above are combined
+    // (e.g. `.mat-radio-button.mat-accent`) which increases their specificity a lot.
+    // TODO: consider making the selectors into descendants (`.mat-primary .mat-radio-button`).
+    &.mat-radio-disabled {
+      &.mat-radio-checked .mat-radio-outer-circle,
+      .mat-radio-outer-circle {
+        border-color: mat-color($foreground, disabled);
+      }
+
+      .mat-radio-ripple .mat-ripple-element,
+      .mat-radio-inner-circle {
+        background-color: mat-color($foreground, disabled);
+      }
+
+      .mat-radio-label-content {
+        color: mat-color($foreground, disabled);
+      }
+    }
+
+    // Switch this to a solid color since we're using `opacity`
+    // to control how opaque the ripple should be.
+    .mat-ripple-element {
+      background-color: map_get($foreground, base);
+    }
+  }
+}
+
+// Override typography for all Angular Material, including mat-base-typography and all components.
+@include angular-material-typography($cc-lr);
+@include mat-form-field-typography($cc-lr);
+@include mat-option-typography($cc-lr);
+
+@include mat-core($cc-lr);
+/* 自定義的 theming */
+$custom-theme: mat-light-theme($cc-primary, $cc-font, $cc-warn);
+@include angular-material-theme($custom-theme);
+
+
